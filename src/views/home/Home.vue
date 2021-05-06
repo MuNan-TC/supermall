@@ -5,7 +5,7 @@
     <recommend-view :recommends="recommends"/>
     <feature-view/>
     <tab-control :titles="['流行', '新款', '精选']" class="tab-control"/>
-    <goods-list :goods="goods"/>
+    <goods-list :goods="goods['pop'].list"/>
     <ul>
       <li>hfha</li>
       <li>hfha</li>
@@ -111,6 +111,8 @@
       /**
        * 网络请求
        */
+
+      //1.请求多个数据
       getHomeMultidata() {
         getHomeMultidata().then(res => {
           this.banners = res.data.banner.list;
@@ -118,6 +120,7 @@
         })
       },
 
+      //2.请求首页商品数据
       getHomeGoods(type) {
         const page = this.goods[type].page + 1
         getHomeGoods(type, page).then(res => {
