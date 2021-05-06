@@ -25,9 +25,9 @@
 
 <style scoped>
   .goods-item {
-    padding-top: 40px;
+    padding-bottom: 40px;
     position: relative;
-    widows: 48%;
+    width: 48%;
   }
 
   .goods-item img {
@@ -54,7 +54,7 @@
 
   .goods-info .price {
     color: var(--color-high-text);
-    margin-top: 20px;
+    margin-right: 20px;
   }
 
   .goods-info .collect {
@@ -65,7 +65,7 @@
     content: '';
     position: absolute;
     left: -15px;
-    top: -10px;
+    top: -1px;
     width: 14px;
     height: 14px;
     background: url("~assets/img/common/collect.svg") 0 0/14px 14px;
