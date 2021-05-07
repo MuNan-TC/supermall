@@ -4,7 +4,9 @@
     <scroll class="content" 
             ref="scroll"
             @scroll="contentScroll"
-            :probe-type="3">
+            :probe-type="3"
+            :pull-up-load="true"
+            @pullingUp="loadMore">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
@@ -114,9 +116,13 @@
         this.$refs.scroll.scrollTo(0, 0)
       },
 
-      /* backtop的显与掩 */
+      /*3.backtop的显与掩 */
       contentScroll(position) {
         this.isShowBackTop = -position.y > 1000
+      },
+      /* 4.请求加载更多 */
+      loadMore() {
+        this.getHomeGoods(this.currentType)
       }
     }
   }
