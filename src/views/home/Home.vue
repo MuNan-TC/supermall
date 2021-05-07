@@ -1,72 +1,16 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"/>
-    <recommend-view :recommends="recommends"/>
-    <feature-view/>
-    <tab-control :titles="['流行', '新款', '精选']"
-                 class="tab-control"
-                 @tabClick="tabClick"/>
-    <goods-list :goods="showGoods"/>
-    <ul>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-      <li>hfha</li>
-    </ul>
+    <scroll class="content" ref="scroll">
+      <home-swiper :banners="banners"/>
+      <recommend-view :recommends="recommends"/>
+      <feature-view/>
+      <tab-control :titles="['流行', '新款', '精选']"
+                  class="tab-control"
+                  @tabClick="tabClick"/>
+      <goods-list :goods="showGoods"/>
+    </scroll>
+    
   </div>
 </template>
 
@@ -76,6 +20,7 @@
   import FeatureView from './childComp/FeatureView'
   
   import NavBar from 'components/common/navbar/NavBar'
+  import Scroll from 'components/common/scroll/Scroll'
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goods/GoodsList'
 
@@ -88,6 +33,7 @@
       RecommendView,
       FeatureView,
       NavBar,
+      Scroll,
       TabControl,
       GoodsList
     },
@@ -162,9 +108,9 @@
 
 <style scoped>
   #home {
-    /* height: 100vh;
-    position: relative; */
-    padding-top: 44px;
+    height: 100vh;
+    position: relative;
+    /* padding-top: 44px; */
   }
 
   .home-nav {
@@ -182,5 +128,15 @@
     position: sticky;
     top: 44px;
     z-index: 9;
+  }
+
+  .content {
+    overflow: hidden;
+
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
   }
 </style>
