@@ -1,7 +1,10 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content" ref="scroll">
+    <scroll class="content" 
+            ref="scroll"
+            @scroll="contentScroll"
+            :probe-type="3">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
@@ -10,7 +13,8 @@
                   @tabClick="tabClick"/>
       <goods-list :goods="showGoods"/>
     </scroll>
-    
+    <!-- 监听组件的原生事件，需要加入.native -->
+    <back-top @click.native = "backTop" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -23,6 +27,7 @@
   import Scroll from 'components/common/scroll/Scroll'
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goods/GoodsList'
+  import BackTop from 'components/content/backTop/BackTop'
 
   import {getHomeMultidata, getHomeGoods} from 'network/home'
 
@@ -35,7 +40,8 @@
       NavBar,
       Scroll,
       TabControl,
-      GoodsList
+      GoodsList,
+      BackTop
     },
     data() {
       return {
@@ -46,7 +52,8 @@
           'new': { page: 0, list: [] },
           'sell': {page: 0, list: [] }
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        isShowBackTop: false
       }
     },
     computed: {
@@ -101,6 +108,15 @@
           case 2:
             this.currentType = 'sell'
         }
+      },
+      /* 2.返回顶部 */
+      backTop() {
+        this.$refs.scroll.scrollTo(0, 0)
+      },
+
+      /* backtop的显与掩 */
+      contentScroll(position) {
+        this.isShowBackTop = -position.y > 1000
       }
     }
   }
