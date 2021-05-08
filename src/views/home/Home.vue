@@ -63,7 +63,8 @@
         currentType: 'pop',
         isShowBackTop: false,
         isFixedTabControl: false,
-        tabControlOffsetTop: 0
+        tabControlOffsetTop: 0,
+        saveY: 0
       }
     },
     computed: {
@@ -160,7 +161,22 @@
           this.$refs.scroll.finishPullUp()
         })
       }
-    }
+    },
+    
+    /**
+     * 保持home当前状态：
+     * 1.设置keep-alive使得离开home时路由不会被销毁
+     * 2.记录离开时的位置信息，返回时使用
+     */
+    /* 返回home时触发 */
+      activated() {
+        this.$refs.scroll.scrollTo(0, this.saveY, 0)
+        this.$refs.scroll.refresh()
+      },
+      /* 离开home时触发 */
+      deactivated() {
+        this.saveY = this.$refs.scroll.getSaveY()
+      },
   }
 </script>
 
