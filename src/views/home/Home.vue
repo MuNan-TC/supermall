@@ -1,18 +1,23 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control :titles="['流行', '新款', '精选']"
+                  @tabClick="tabClick"
+                  ref="tabControl1"
+                  class="tab-control"
+                  v-show="isFixedTabControl"/>
     <scroll class="content" 
             ref="scroll"
             @scroll="contentScroll"
             :probe-type="3"
             :pull-up-load="true"
             @pullingUp="loadMore">
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control :titles="['流行', '新款', '精选']"
-                  class="tab-control"
-                  @tabClick="tabClick"/>
+                  @tabClick="tabClick"
+                  ref="tabControl2"/>
       <goods-list :goods="showGoods"/>
     </scroll>
     <!-- 监听组件的原生事件，需要加入.native -->
@@ -32,6 +37,7 @@
   import BackTop from 'components/content/backTop/BackTop'
 
   import {getHomeMultidata, getHomeGoods} from 'network/home'
+/*   import {debounce} from 'common/utils' */
 
   export default {
     name: 'Home',
@@ -55,7 +61,9 @@
           'sell': {page: 0, list: [] }
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        isFixedTabControl: false,
+        tabControlOffsetTop: 0
       }
     },
     computed: {
@@ -71,11 +79,20 @@
       this.getHomeGoods('pop')
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
-
+ 
+    },
+    mounted() {
       //3.监听图片加载完成执行refresh
+      /* 为了防止在创建的时候未加载完成导致无法拿到refresh，所以最好放在mounted中 */
       this.$bus.$on('itemImageLoad', () => {
         this.$refs.scroll.refresh()
+        /* debounce(this.$refs.scroll.refresh, 100) */
       })
+
+      /* 获取tabcontrol的offsetTop
+      *  获取组件的dom使用$el属性
+       */
+      
     },
     methods: {
        /**
@@ -95,20 +112,32 @@
           case 2:
             this.currentType = 'sell'
         }
+        /* 保持当前点击和选择相同 */
+        this.$refs.tabControl1.currentIndex = index
+        this.$refs.tabControl2.currentIndex = index
       },
       /* 2.返回顶部 */
       backTop() {
         this.$refs.scroll.scrollTo(0, 0)
       },
-
       /*3.backtop的显与掩 */
       contentScroll(position) {
         this.isShowBackTop = -position.y > 1000
+
+        /* tabcontrol是否有吸顶效果 
+        *   这种之后在tabControl中动态绑定class绝对是否显掩时会造成tabcontrol看起来“消失”（其实是直接跑到界面外，看不出来）
+        *   解决办法：在滚动界面外在加入一个tabcontrol组件，并在滚动到一定位置时显示出来，从而造成看起来固定的效果
+        */
+        this.isFixedTabControl = -position.y > this.tabControlOffsetTop
       },
       /* 4.请求加载更多 */
       loadMore() {
         this.getHomeGoods(this.currentType)
 
+      },
+      /* 获取加载轮播图之后的tabcontrol的offsetTop */
+      swiperImageLoad() {
+        this.tabControlOffsetTop = this.$refs.tabControl2.$el.offsetTop
       },
       /**
        * 网络请求
@@ -146,16 +175,25 @@
     background-color: var(--color-tint);
     color: #fff;
 
-    position: fixed;
+    /*对于元素滚动，防止跟随界面滚动设置，在引用better-scroll之后就不需要了 */
+    /* position: fixed;
     left: 0;
     right: 0;
     top: 0;
-    z-index: 9;
+    z-index: 9; */
   }
 
-  .tab-control {
-    position: sticky;
+  /* .fixed {
+    position: fixed;
     top: 44px;
+    left: 0;
+    right: 0;
+  } */
+
+  /* 设置相对定位之后，通过v-show绝对是否显示 */
+  .tab-control {
+    position: relative;
+    background-color: var(--color-background);
     z-index: 9;
   }
 
