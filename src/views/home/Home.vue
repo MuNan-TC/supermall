@@ -71,29 +71,14 @@
       this.getHomeGoods('pop')
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
+
+      //3.监听图片加载完成执行refresh
+      this.$bus.$on('itemImageLoad', () => {
+        this.$refs.scroll.refresh()
+      })
     },
     methods: {
-      /**
-       * 网络请求
-       * 1.请求多个数据
-       */
-      getHomeMultidata() {
-        getHomeMultidata().then(res => {
-          this.banners = res.data.banner.list;
-          this.recommends = res.data.recommend.list
-        })
-      },
-
-      //2.请求首页商品数据
-      getHomeGoods(type) {
-        const page = this.goods[type].page + 1
-        getHomeGoods(type, page).then(res => {
-          this.goods[type].list.push(...res.data.list)
-          this.goods[type].page += 1
-        })
-      },
-
-      /**
+       /**
        * 事件监听相关的方法
        */
 
@@ -123,6 +108,28 @@
       /* 4.请求加载更多 */
       loadMore() {
         this.getHomeGoods(this.currentType)
+
+      },
+      /**
+       * 网络请求
+       * 1.请求多个数据
+       */
+      getHomeMultidata() {
+        getHomeMultidata().then(res => {
+          this.banners = res.data.banner.list;
+          this.recommends = res.data.recommend.list
+        })
+      },
+
+      //2.请求首页商品数据
+      getHomeGoods(type) {
+        const page = this.goods[type].page + 1
+        getHomeGoods(type, page).then(res => {
+          this.goods[type].list.push(...res.data.list)
+          this.goods[type].page += 1
+
+          this.$refs.scroll.finishPullUp()
+        })
       }
     }
   }

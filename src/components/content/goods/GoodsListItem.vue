@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="">
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -18,6 +18,17 @@
         default() {
           return {}
         }
+      }
+    },
+    methods: {
+      /* 监听图片加载完毕:@load */
+      imageLoad() {
+        /* 该组件此时需要调用scroll组件的方法，俩者之间并无关系
+        *   此时就需要一个事件总线将俩者关联
+        * 定义一个原型：$bus,为一个vue实例对象
+        * 之后将事件发生出去
+        */
+        this.$bus.$emit('itemImageLoad')
       }
     }
   }
