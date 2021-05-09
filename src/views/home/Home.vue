@@ -89,11 +89,6 @@
         this.$refs.scroll.refresh()
         /* debounce(this.$refs.scroll.refresh, 100) */
       })
-
-      /* 获取tabcontrol的offsetTop
-      *  获取组件的dom使用$el属性
-       */
-      
     },
     methods: {
        /**
@@ -136,7 +131,10 @@
         this.getHomeGoods(this.currentType)
 
       },
-      /* 获取加载轮播图之后的tabcontrol的offsetTop */
+      /* 获取tabcontrol的offsetTop
+      *  获取组件的dom使用$el属性
+      * 获取加载轮播图之后的tabcontrol的offsetTop 
+      */
       swiperImageLoad() {
         this.tabControlOffsetTop = this.$refs.tabControl2.$el.offsetTop
       },
