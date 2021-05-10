@@ -6,6 +6,7 @@
     <detail-shop-info :shop="shop"/>
     <detail-goods-info :goods-info="goodsInfo"/>
     <detail-goods-params :goods-params="goodsParams"/>
+    <detail-comment-info :comment-info="commentInfo"/>
   </div>
 </template>
 
@@ -16,6 +17,7 @@
   import DetailShopInfo from './childComp/DetailShopInfo'
   import DetailGoodsInfo from './childComp/DetailGoodsInfo'
   import DetailGoodsParams from './childComp/DetailGoodsParams'
+  import DetailCommentInfo from './childComp/DetailCommentInfo'
 
   import {getDetail, Goods, Shop, GoodsParams} from 'network/detail'
 
@@ -28,7 +30,8 @@
         goods: {},
         shop: {},
         goodsInfo: {},
-        goodsParams: {}
+        goodsParams: {},
+        commentInfo: {}
       }
     },
     components: {
@@ -37,7 +40,8 @@
       DetailBaseInfo,
       DetailShopInfo,
       DetailGoodsInfo,
-      DetailGoodsParams
+      DetailGoodsParams,
+      DetailCommentInfo
     },
     created() {
       //1.保存传入的商品id
@@ -56,11 +60,16 @@
         //3.获取店铺信息
         this.shop = new Shop(data.shopInfo)
 
-        //获取商品详情信息
+        //4.获取商品详情信息
         this.goodsInfo = data.detailInfo
 
-        //获取商品参数信息
+        //5.获取商品参数信息
         this.goodsParams = new GoodsParams(data.itemParams.info, data.itemParams.rule)
+
+        //6.获取商品评论信息
+        if(data.rate.crate !== 0) {
+          this.commentInfo = data.rate.list[0]
+        }
       })
     },
   }
