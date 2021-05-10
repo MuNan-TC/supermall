@@ -130,7 +130,7 @@
     color: #f13e3a;
   }
 
-  .shop-middle-right .better span {
+  .shop-middle-right .better span{
     background-color: #5ea732;
     color: #fff;
     text-align: center;

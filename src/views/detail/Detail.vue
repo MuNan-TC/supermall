@@ -5,6 +5,7 @@
     <detail-base-info :goods="goods"/>
     <detail-shop-info :shop="shop"/>
     <detail-goods-info :goods-info="goodsInfo"/>
+    <detail-goods-params :goods-params="goodsParams"/>
   </div>
 </template>
 
@@ -14,8 +15,9 @@
   import DetailBaseInfo from './childComp/DetailBaseInfo'
   import DetailShopInfo from './childComp/DetailShopInfo'
   import DetailGoodsInfo from './childComp/DetailGoodsInfo'
+  import DetailGoodsParams from './childComp/DetailGoodsParams'
 
-  import {getDetail, Goods, Shop} from 'network/detail'
+  import {getDetail, Goods, Shop, GoodsParams} from 'network/detail'
 
   export default {
     name: 'Detail',
@@ -25,7 +27,8 @@
         topImages: [],
         goods: {},
         shop: {},
-        goodsInfo: {}
+        goodsInfo: {},
+        goodsParams: {}
       }
     },
     components: {
@@ -33,7 +36,8 @@
       DetailSwiper,
       DetailBaseInfo,
       DetailShopInfo,
-      DetailGoodsInfo
+      DetailGoodsInfo,
+      DetailGoodsParams
     },
     created() {
       //1.保存传入的商品id
@@ -54,6 +58,9 @@
 
         //获取商品详情信息
         this.goodsInfo = data.detailInfo
+
+        //获取商品参数信息
+        this.goodsParams = new GoodsParams(data.itemParams.info, data.itemParams.rule)
       })
     },
   }
@@ -62,17 +69,14 @@
 <style>
   .detail {
     position: relative;
-    height: 100vh;
-    padding-top: 44px;
-    z-index: 9;
   }
 
   .detail-nav-bar {
-    position: relative;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 10;
+    z-index: 9;
     background-color: #fff;
   }
 </style>
