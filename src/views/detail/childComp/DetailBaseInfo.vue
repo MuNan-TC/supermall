@@ -9,8 +9,8 @@
     </div>
     <div class="info-other">
       <span>{{goods.columns[0]}}</span>
-      <span>{{goods.columns[1]}}</span>
-      <span class="info-other-item">{{goods.services[goods.services.length-1].name}}</span>
+      <span class="info-other-center">{{goods.columns[1]}}</span>
+      <span class="info-other-right">{{goods.services[goods.services.length-1].name}}</span>
     </div>
     <div class="info-services">
       <span class="info-services-item">
@@ -80,6 +80,14 @@
 
   .info-other span {
     flex: 1;
+  }
+
+  .info-other .info-other-center {
+    margin-left: 50px;
+  }
+
+  .info-other .info-other-right {
+    margin-left: 40px;
   }
 
   .info-services {
