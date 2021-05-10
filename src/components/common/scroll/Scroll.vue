@@ -38,15 +38,19 @@
 
       /* console.log(this.scroll); */
       /* 监听滚动的位置 */
-      this.scroll.on('scroll', (position) => {
-        /* 将position发送出去 */
-        this.$emit('scroll', position)
-      })
+      if(this.probeType === 2 || this.probeType === 3) {
+          this.scroll.on('scroll', (position) => {
+          /* 将position发送出去 */
+          this.$emit('scroll', position)
+        })
+      }
       
       /* 上拉加载更多 */ 
-      this.scroll.on('pullingUp', () => {
-        this.$emit('pullingUp')
-      })          
+      if(this.pullUpLoad) {
+          this.scroll.on('pullingUp', () => {
+          this.$emit('pullingUp')
+        }) 
+      }         
     },
     methods: {
       scrollTo(x, y, time=300) {

@@ -1,9 +1,10 @@
 <template>
   <div class="detial">
-    <detail-nav-bar/>
+    <detail-nav-bar class="detail-nav-bar"/>
     <detail-swiper :topImages="topImages"/>
     <detail-base-info :goods="goods"/>
     <detail-shop-info :shop="shop"/>
+    <detail-goods-info :goods-info="goodsInfo"/>
   </div>
 </template>
 
@@ -12,8 +13,7 @@
   import DetailSwiper from './childComp/DetailSwiper'
   import DetailBaseInfo from './childComp/DetailBaseInfo'
   import DetailShopInfo from './childComp/DetailShopInfo'
-
- /*  import Scroll from 'components/common/scroll/Scroll' */
+  import DetailGoodsInfo from './childComp/DetailGoodsInfo'
 
   import {getDetail, Goods, Shop} from 'network/detail'
 
@@ -24,7 +24,8 @@
         iid: null,
         topImages: [],
         goods: {},
-        shop: {}
+        shop: {},
+        goodsInfo: {}
       }
     },
     components: {
@@ -32,6 +33,7 @@
       DetailSwiper,
       DetailBaseInfo,
       DetailShopInfo,
+      DetailGoodsInfo
     },
     created() {
       //1.保存传入的商品id
@@ -49,6 +51,9 @@
 
         //3.获取店铺信息
         this.shop = new Shop(data.shopInfo)
+
+        //获取商品详情信息
+        this.goodsInfo = data.detailInfo
       })
     },
   }
@@ -57,16 +62,17 @@
 <style>
   .detail {
     position: relative;
-    z-index: 9;
-    background-color: #fff;
     height: 100vh;
+    padding-top: 44px;
+    z-index: 9;
   }
 
- /*  .content {
+  .detail-nav-bar {
     position: relative;
-    top: 44px;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
-  } */
+    z-index: 10;
+    background-color: #fff;
+  }
 </style>
