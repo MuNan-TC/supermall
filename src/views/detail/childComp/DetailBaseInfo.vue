@@ -13,12 +13,10 @@
       <span class="info-other-right">{{goods.services[goods.services.length-1].name}}</span>
     </div>
     <div class="info-services">
-      <span class="info-services-item">
-        <img :src="goods.services[0].icon" alt="">
-        <span>{{goods.services[0].name}}</span>
-        <img :src="goods.services[1].icon" alt="">
-        <span>{{goods.services[1].name}}</span>
-      </span>
+      <div v-for="index in goods.services.length-1" :key="index">
+        <img :src="goods.services[index-1].icon" alt="">
+        {{goods.services[index-1].name}}
+      </div>
     </div>
   </div>
 </template>
@@ -91,6 +89,7 @@
   }
 
   .info-services {
+    display: flex;
     font-size: 12px;
     color: #333;
     padding: 10px 4px;

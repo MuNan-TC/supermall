@@ -10,16 +10,18 @@
     </div>
     <div class="comment-text">{{commentInfo.content}}</div>
     <div class="comment-goods-info">
-      <span class="comment-time">{{commentInfo.created}}</span>
+      <span class="comment-time">{{commentInfo.created | showDate()}}</span>
       <span>{{commentInfo.style}}</span>
     </div>
-    <div class="comment-info-img" v-for="(img, index) in commentInfo.images" :key="index">
-      <img :src="img" alt="">
+    <div class="comment-info-img">
+      <img :src="img" alt="" v-for="(img, index) in commentInfo.images" :key="index">
     </div>
   </div>
 </template>
 
 <script>
+  import {formatDate} from 'common/utils'
+
   export default {
     name: 'DetailCommentInfo',
     props: {
@@ -28,6 +30,14 @@
         default() {
           return {}
         }
+      }
+    },
+    filters: {
+      showDate(value) {
+        //将时间戳转换为Date对象,时间戳单位为毫秒，data为秒，需要乘1000
+        const data = new Date(value * 1000)
+        //调用封装的formateDate将data格式化
+        return formatDate(data, 'yyyy-MM-dd')
       }
     }
   }
@@ -72,8 +82,7 @@
     margin-right: 10px;
   }
 
-  .comment-info-wrap .comment-info-images img {
-    display: flex;
+  .comment-info-images img {
     width: 60px;
     height: 60px;
     margin-right: 6px;

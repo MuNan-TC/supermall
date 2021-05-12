@@ -7,6 +7,7 @@
     <detail-goods-info :goods-info="goodsInfo"/>
     <detail-goods-params :goods-params="goodsParams"/>
     <detail-comment-info :comment-info="commentInfo"/>
+    <goods-list :goods="recommends"/>
   </div>
 </template>
 
@@ -19,7 +20,9 @@
   import DetailGoodsParams from './childComp/DetailGoodsParams'
   import DetailCommentInfo from './childComp/DetailCommentInfo'
 
-  import {getDetail, Goods, Shop, GoodsParams} from 'network/detail'
+  import GoodsList from 'components/content/goods/GoodsList'
+
+  import {getDetail, Goods, Shop, GoodsParams, getRecommend} from 'network/detail'
 
   export default {
     name: 'Detail',
@@ -31,7 +34,8 @@
         shop: {},
         goodsInfo: {},
         goodsParams: {},
-        commentInfo: {}
+        commentInfo: {},
+        recommends: []
       }
     },
     components: {
@@ -41,7 +45,8 @@
       DetailShopInfo,
       DetailGoodsInfo,
       DetailGoodsParams,
-      DetailCommentInfo
+      DetailCommentInfo,
+      GoodsList
     },
     created() {
       //1.保存传入的商品id
@@ -70,6 +75,10 @@
         if(data.rate.crate !== 0) {
           this.commentInfo = data.rate.list[0]
         }
+      })
+      //3.获取推荐信息
+      getRecommend(this.iid).then(res => {
+        this.recommends = res.data.list
       })
     },
   }
