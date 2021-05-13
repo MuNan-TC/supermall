@@ -41,7 +41,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .titles {
     display: flex;
     font-size: 13px;

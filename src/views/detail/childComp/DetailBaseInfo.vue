@@ -35,7 +35,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .info-title {
     margin: 10px 0;
     padding: 0 4px;

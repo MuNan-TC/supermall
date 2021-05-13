@@ -31,7 +31,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .params-info {
     padding: 20px 15px;
     font-size: 14px;

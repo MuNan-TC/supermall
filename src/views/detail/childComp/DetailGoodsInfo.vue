@@ -28,7 +28,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .info-text-wrap {
     position: relative;
   }

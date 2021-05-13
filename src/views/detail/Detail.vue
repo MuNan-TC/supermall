@@ -1,13 +1,18 @@
 <template>
   <div class="detial">
     <detail-nav-bar class="detail-nav-bar"/>
-    <detail-swiper :topImages="topImages"/>
-    <detail-base-info :goods="goods"/>
-    <detail-shop-info :shop="shop"/>
-    <detail-goods-info :goods-info="goodsInfo"/>
-    <detail-goods-params :goods-params="goodsParams"/>
-    <detail-comment-info :comment-info="commentInfo"/>
-    <goods-list :goods="recommends"/>
+    <scroll class="content"
+            :probe-type="3"
+            :observe-image="true"
+            ref="scroll">
+      <detail-swiper :topImages="topImages"/>
+      <detail-base-info :goods="goods"/>
+      <detail-shop-info :shop="shop"/>
+      <detail-goods-info :goods-info="goodsInfo"/>
+      <detail-goods-params :goods-params="goodsParams" ref="goodsParams"/>
+      <detail-comment-info :comment-info="commentInfo" ref="comment"/>
+      <goods-list :goods="recommends" ref="recommends"/>
+    </scroll>
   </div>
 </template>
 
@@ -20,6 +25,7 @@
   import DetailGoodsParams from './childComp/DetailGoodsParams'
   import DetailCommentInfo from './childComp/DetailCommentInfo'
 
+  import Scroll from 'components/common/scroll/Scroll'
   import GoodsList from 'components/content/goods/GoodsList'
 
   import {getDetail, Goods, Shop, GoodsParams, getRecommend} from 'network/detail'
@@ -35,7 +41,8 @@
         goodsInfo: {},
         goodsParams: {},
         commentInfo: {},
-        recommends: []
+        recommends: [],
+        SaveY: []
       }
     },
     components: {
@@ -46,7 +53,8 @@
       DetailGoodsInfo,
       DetailGoodsParams,
       DetailCommentInfo,
-      GoodsList
+      GoodsList,
+      Scroll
     },
     created() {
       //1.保存传入的商品id
@@ -81,12 +89,27 @@
         this.recommends = res.data.list
       })
     },
+    methods: {
+      /* datailScroll(position) {
+        console.log(position);
+      } */
+    }
   }
 </script>
 
-<style>
+<style scoped>
   .detail {
     position: relative;
+    height: 100vh;
+  }
+
+  .content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
   }
 
   .detail-nav-bar {

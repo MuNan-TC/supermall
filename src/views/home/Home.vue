@@ -129,7 +129,6 @@
       /* 4.请求加载更多 */
       loadMore() {
         this.getHomeGoods(this.currentType)
-
       },
       /* 获取tabcontrol的offsetTop
       *  获取组件的dom使用$el属性
@@ -168,12 +167,14 @@
      */
     /* 返回home时触发 */
       activated() {
+        console.log(this.saveY);
         this.$refs.scroll.scrollTo(0, this.saveY, 0)
         this.$refs.scroll.refresh()
       },
       /* 离开home时触发 */
       deactivated() {
         this.saveY = this.$refs.scroll.getSaveY()
+        console.log(this.saveY);
       },
   }
 </script>
