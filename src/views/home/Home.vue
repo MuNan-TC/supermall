@@ -198,12 +198,6 @@
     z-index: 9; */
   }
 
-  /* .fixed {
-    position: fixed;
-    top: 44px;
-    left: 0;
-    right: 0;
-  } */
 
   /* 设置相对定位之后，通过v-show绝对是否显示 */
   .tab-control {

@@ -9,9 +9,7 @@
 <script>
   import BScroll from '@better-scroll/core'
   import PullUp from '@better-scroll/pull-up'
-  import ObserveImage from '@better-scroll/observe-image'
   BScroll.use(PullUp)
-  BScroll.use(ObserveImage)
 
   export default {
     name: 'Scroll',
@@ -21,10 +19,6 @@
         default: 0
       },
       pullUpLoad: {
-        type: Boolean,
-        default: false
-      },
-      observeImage: {
         type: Boolean,
         default: false
       }
@@ -42,9 +36,9 @@
         click: true,
         probeType: this.probeType,
         pullUpLoad: this.pullUpLoad,
-        observeImage: this.observeImage
       })
 
+      console.log(this.scroll);
       /* console.log(this.scroll); */
       /* 监听滚动的位置 */
       if(this.probeType === 2 || this.probeType === 3) {

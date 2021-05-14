@@ -1,10 +1,10 @@
 <template>
-  <div class="detial">
+  <div id="detial">
     <detail-nav-bar class="detail-nav-bar"/>
     <scroll class="content"
             :probe-type="3"
-            :observe-image="true"
-            ref="scroll">
+            ref="scroll"
+            @scroll="contentScroll">
       <detail-swiper :topImages="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
@@ -90,23 +90,33 @@
       })
     },
     methods: {
-      /* datailScroll(position) {
+      contentScroll(position) {
         console.log(position);
-      } */
+      }
     }
   }
 </script>
 
 <style scoped>
-  .detail {
+  #detail {
     position: relative;
     height: 100vh;
+    z-index: 1;
+  }
+
+  #detail::after {
+    content: "";
+    height: 0;
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
   }
 
   .content {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 44px;
+    bottom: 49px;
     left: 0;
     right: 0;
     overflow: hidden;
@@ -117,6 +127,7 @@
     top: 0;
     left: 0;
     right: 0;
+    /* position: relative; */
     z-index: 9;
     background-color: #fff;
   }
