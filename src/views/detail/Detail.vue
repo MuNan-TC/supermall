@@ -1,17 +1,19 @@
 <template>
-  <div id="detial">
+  <div id="detail">
     <detail-nav-bar class="detail-nav-bar"/>
     <scroll class="content"
             :probe-type="3"
             ref="scroll"
             @scroll="contentScroll">
-      <detail-swiper :topImages="topImages"/>
-      <detail-base-info :goods="goods"/>
-      <detail-shop-info :shop="shop"/>
-      <detail-goods-info :goods-info="goodsInfo"/>
-      <detail-goods-params :goods-params="goodsParams" ref="goodsParams"/>
-      <detail-comment-info :comment-info="commentInfo" ref="comment"/>
-      <goods-list :goods="recommends" ref="recommends"/>
+      <div>
+        <detail-swiper :topImages="topImages"/>
+        <detail-base-info :goods="goods"/>
+        <detail-shop-info :shop="shop"/>
+        <detail-goods-info :goods-info="goodsInfo"/>
+        <detail-goods-params :goods-params="goodsParams" ref="goodsParams"/>
+        <detail-comment-info :comment-info="commentInfo" ref="comment"/>
+        <goods-list :goods="recommends" ref="recommends"/>
+      </div>
     </scroll>
   </div>
 </template>
@@ -29,6 +31,7 @@
   import GoodsList from 'components/content/goods/GoodsList'
 
   import {getDetail, Goods, Shop, GoodsParams, getRecommend} from 'network/detail'
+/*   import {itemListenerMixin} from 'common/mixin' */
 
   export default {
     name: 'Detail',
@@ -45,6 +48,7 @@
         SaveY: []
       }
     },
+  /*   mixins: [itemListenerMixin], */
     components: {
       DetailNavBar,
       DetailSwiper,
@@ -63,6 +67,7 @@
       //2.根据id获取相应商品信息
       getDetail(this.iid).then(res => {
         console.log(res);
+        //保留结果
         const data = res.result
         //1.获取商品轮播的图片
         this.topImages = data.itemInfo.topImages
@@ -85,14 +90,25 @@
         }
       })
       //3.获取推荐信息
-      getRecommend(this.iid).then(res => {
+      getRecommend(this.iid).then((res, err) => {
+        if(err) return
         this.recommends = res.data.list
+      })
+    },
+    mounted() {
+      this.$bus.$on('itemImageLoad', () => {
+        this.$refs.scroll.refresh()
       })
     },
     methods: {
       contentScroll(position) {
         console.log(position);
       }
+    },
+    destroyed() {
+      this.$bus.$off('itemImageLoad', () => {
+        this.$refs.scroll.refresh()
+      })
     }
   }
 </script>
@@ -102,15 +118,7 @@
     position: relative;
     height: 100vh;
     z-index: 1;
-  }
-
-  #detail::after {
-    content: "";
-    height: 0;
-    clear: both;
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
+    background-color: #fff;
   }
 
   .content {
@@ -119,7 +127,7 @@
     bottom: 49px;
     left: 0;
     right: 0;
-    overflow: hidden;
+   /*  overflow: hidden; */
   }
 
   .detail-nav-bar {

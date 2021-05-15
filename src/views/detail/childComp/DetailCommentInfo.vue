@@ -82,7 +82,7 @@
     margin-right: 10px;
   }
 
-  .comment-info-images img {
+  .comment-info-img img {
     width: 60px;
     height: 60px;
     margin-right: 6px;

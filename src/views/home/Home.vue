@@ -12,13 +12,15 @@
             :probe-type="3"
             :pull-up-load="true"
             @pullingUp="loadMore">
-      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
-      <recommend-view :recommends="recommends"/>
-      <feature-view/>
-      <tab-control :titles="['流行', '新款', '精选']"
-                  @tabClick="tabClick"
-                  ref="tabControl2"/>
-      <goods-list :goods="showGoods"/>
+      <div>
+        <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
+        <recommend-view :recommends="recommends"/>
+        <feature-view/>
+        <tab-control :titles="['流行', '新款', '精选']"
+                    @tabClick="tabClick"
+                    ref="tabControl2"/>
+        <goods-list :goods="showGoods"/>
+      </div>
     </scroll>
     <!-- 监听组件的原生事件，需要加入.native -->
     <back-top @click.native = "backTop" v-show="isShowBackTop"/>
@@ -38,6 +40,8 @@
 
   import {getHomeMultidata, getHomeGoods} from 'network/home'
 /*   import {debounce} from 'common/utils' */
+  import {itemListenerMixin} from 'common/mixin'
+
 
   export default {
     name: 'Home',
@@ -51,6 +55,7 @@
       GoodsList,
       BackTop
     },
+    mixins: [itemListenerMixin],
     data() {
       return {
         banners: [],
@@ -87,7 +92,7 @@
       /* 为了防止在创建的时候未加载完成导致无法拿到refresh，所以最好放在mounted中 */
       this.$bus.$on('itemImageLoad', () => {
         this.$refs.scroll.refresh()
-        /* debounce(this.$refs.scroll.refresh, 100) */
+        /*debounce(this.$refs.scroll.refresh, 100)  */
       })
     },
     methods: {
@@ -175,6 +180,11 @@
       deactivated() {
         this.saveY = this.$refs.scroll.getSaveY()
         console.log(this.saveY);
+
+        //q取消全局事件的监听
+        this.$bus.$off('itemImageLoad', () => {
+          this.$refs.scroll.refresh()
+        })
       },
   }
 </script>
