@@ -15,6 +15,7 @@
         <goods-list :goods="recommends" ref="recommend"/>
       </div>
     </scroll>
+    <detail-bottom-bar/>
   </div>
 </template>
 
@@ -26,6 +27,7 @@
   import DetailGoodsInfo from './childComp/DetailGoodsInfo'
   import DetailGoodsParams from './childComp/DetailGoodsParams'
   import DetailCommentInfo from './childComp/DetailCommentInfo'
+  import DetailBottomBar from './childComp/DetailBottomBar'
 
   import Scroll from 'components/common/scroll/Scroll'
   import GoodsList from 'components/content/goods/GoodsList'
@@ -60,6 +62,7 @@
       DetailGoodsInfo,
       DetailGoodsParams,
       DetailCommentInfo,
+      DetailBottomBar,
       GoodsList,
       Scroll
     },
@@ -153,7 +156,7 @@
   .content {
     position: absolute;
     top: 44px;
-    bottom: 49px;
+    bottom: 0;
     left: 0;
     right: 0;
    /*  overflow: hidden; */
