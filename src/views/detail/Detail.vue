@@ -1,6 +1,6 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav-bar"/>
+    <detail-nav-bar class="detail-nav-bar" @titleClick="titleClick" ref="nav"/>
     <scroll class="content"
             :probe-type="3"
             ref="scroll"
@@ -10,9 +10,9 @@
         <detail-base-info :goods="goods"/>
         <detail-shop-info :shop="shop"/>
         <detail-goods-info :goods-info="goodsInfo"/>
-        <detail-goods-params :goods-params="goodsParams" ref="goodsParams"/>
+        <detail-goods-params :goods-params="goodsParams" ref="params"/>
         <detail-comment-info :comment-info="commentInfo" ref="comment"/>
-        <goods-list :goods="recommends" ref="recommends"/>
+        <goods-list :goods="recommends" ref="recommend"/>
       </div>
     </scroll>
   </div>
@@ -32,6 +32,7 @@
 
   import {getDetail, Goods, Shop, GoodsParams, getRecommend} from 'network/detail'
 /*   import {itemListenerMixin} from 'common/mixin' */
+  import {debounce} from 'common/utils'
 
   export default {
     name: 'Detail',
@@ -45,7 +46,9 @@
         goodsParams: {},
         commentInfo: {},
         recommends: [],
-        SaveY: []
+        SaveY: [0, 1000, 2000, 3000],
+        getSaveY: null,
+        currentIndex: 0
       }
     },
   /*   mixins: [itemListenerMixin], */
@@ -94,15 +97,41 @@
         if(err) return
         this.recommends = res.data.list
       })
+
+      //4.给getSaveY赋值
+      this.getSaveY = debounce(() => {
+        this.SaveY = []
+        this.SaveY.push(0)
+        this.SaveY.push(this.$refs.params.$el.offsetTop)
+        this.SaveY.push(this.$refs.comment.$el.offsetTop)
+        this.SaveY.push(this.$refs.recommend.$el.offsetTop)
+        this.SaveY.push(Number.MAX_VALUE)
+        // console.log(this.SaveY);
+      }, 100)
     },
     mounted() {
       this.$bus.$on('itemImageLoad', () => {
-        this.$refs.scroll.refresh()
+        if(this.$refs.scroll != undefined) {
+          this.$refs.scroll.refresh()
+        }
+        this.getSaveY()
       })
     },
     methods: {
       contentScroll(position) {
-        console.log(position);
+        //获取y值
+        const y = -position.y
+        //小技巧：为了改变判断最后一个数，直接在数组最后加入一个最大值以达到判断条件统一，从而简化代码
+        for (let i = 0; i < this.SaveY.length - 1; i++) {
+          if(this.currentIndex !== i && (y >= this.SaveY[i] && y < this.SaveY[i+1])){
+            this.currentIndex = i
+            this.$refs.nav.currentIndex = this.currentIndex
+          }
+        }
+      },
+      titleClick(index) {
+        this.$refs.scroll.scrollTo(0, -this.SaveY[index], 100)
+        // console.log(index);
       }
     },
     destroyed() {

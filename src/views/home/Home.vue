@@ -172,14 +172,14 @@
      */
     /* 返回home时触发 */
       activated() {
-        console.log(this.saveY);
+        // console.log(this.saveY);
         this.$refs.scroll.scrollTo(0, this.saveY, 0)
         this.$refs.scroll.refresh()
       },
       /* 离开home时触发 */
       deactivated() {
         this.saveY = this.$refs.scroll.getSaveY()
-        console.log(this.saveY);
+        // console.log(this.saveY);
 
         //q取消全局事件的监听
         this.$bus.$off('itemImageLoad', () => {

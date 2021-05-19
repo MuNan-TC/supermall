@@ -9,7 +9,7 @@ export const itemListenerMixin = {
       this.$refs.scroll.refresh()
     }
     this.$bus.$on('itemImagLoad', this.itemImageListener)
-    console.log('我是混入的内容');
+    // console.log('我是混入的内容');
   }
 }
 
