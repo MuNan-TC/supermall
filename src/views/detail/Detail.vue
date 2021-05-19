@@ -16,6 +16,7 @@
       </div>
     </scroll>
     <detail-bottom-bar/>
+    <back-top @click.native = "backTop" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -35,6 +36,7 @@
   import {getDetail, Goods, Shop, GoodsParams, getRecommend} from 'network/detail'
 /*   import {itemListenerMixin} from 'common/mixin' */
   import {debounce} from 'common/utils'
+  import {BackTopMixin} from 'common/mixin'
 
   export default {
     name: 'Detail',
@@ -48,12 +50,13 @@
         goodsParams: {},
         commentInfo: {},
         recommends: [],
-        SaveY: [0, 1000, 2000, 3000],
+        SaveY: [],
         getSaveY: null,
         currentIndex: 0
       }
     },
   /*   mixins: [itemListenerMixin], */
+    mixins: [BackTopMixin],
     components: {
       DetailNavBar,
       DetailSwiper,
@@ -131,6 +134,7 @@
             this.$refs.nav.currentIndex = this.currentIndex
           }
         }
+        this.isShowBackTop = -position.y > 1000
       },
       titleClick(index) {
         this.$refs.scroll.scrollTo(0, -this.SaveY[index], 100)
