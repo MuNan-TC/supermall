@@ -1,14 +1,16 @@
 <template>
   <div class="cart-list-item">
     <div class="item-selector">
-      <check-button :is-checked="product.check" @click.native="checkBotton"></check-button>
+      <check-button :is-checked="product.check"
+                    @click.native="checkButton">
+      </check-button>
     </div>
     <div class="item-img">
       <img :src="product.image" alt="商品图片">
     </div>
     <div class="item-info">
       <div class="item-title">{{product.title}}</div>
-      <div class="item desc">商品描述：{{product.desc}}</div>
+      <div class="item-desc">商品描述：{{product.desc}}</div>
       <div class="item-bottom">
         <div class="item-price left">￥{{product.price}}</div>
         <div class="item-count right">x{{product.count}}</div>
@@ -34,7 +36,7 @@
       }
     },
     methods: {
-      checkBotton() {
+      checkButton() {
         this.product.check = !this.product.check
       }
     }

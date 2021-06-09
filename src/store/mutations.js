@@ -1,14 +1,15 @@
+import {
+  ADD_COUNT,
+  ADD_TO_CART
+} from './mutation-types'
+
 const mutations = {
-  addCart(state, payload) {
-    //判断新加入的payload的iid是否存在于cartList中
-    let oldProduct = state.cartList.find(item => item.iid === payload.iid)
-    if(oldProduct) {
-      oldProduct.count += 1
-    } else {
-      payload.count = 1
-      payload.check = true
-      state.cartList.push(payload)
-    }
+  [ADD_COUNT](state, payload) {
+    payload.count++
+  },
+  [ADD_TO_CART](state, payload) {
+    payload.check = true
+    state.cartList.push(payload)
   }
 }
 
