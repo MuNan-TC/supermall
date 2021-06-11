@@ -15,7 +15,7 @@
         <goods-list :goods="recommends" ref="recommend"/>
       </div>
     </scroll>
-    <detail-bottom-bar @addCart="addCart"/>
+    <detail-bottom-bar @addCart="addToCart"/>
     <back-top @click.native = "backTop" v-show="isShowBackTop"/>
   </div>
 </template>
@@ -140,7 +140,7 @@
         this.$refs.scroll.scrollTo(0, -this.SaveY[index], 100)
         // console.log(index);
       },
-      addCart() {
+      addToCart() {
         // 1.保存购物车需要展示的商品信息
         const product = {}
         product.iid = this.iid
@@ -149,13 +149,10 @@
         product.desc = this.goods.desc
         product.price = this.goods.realPrice
 
-        /* this.$store.commit('addCart', product).then(res => {
-          console.log(res);
-        }) */
-        console.log(product);
-        this.$store.dispatch('addCart', product).then(res => {
-          console.log(res);
-        })
+        this.$store.commit('addCart', product)
+        // this.$store.dispatch('addCart', product).then(res => {
+        //   console.log(res);
+        // })
       }
     },
     destroyed() {

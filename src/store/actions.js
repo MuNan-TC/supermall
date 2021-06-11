@@ -1,13 +1,14 @@
 import {
   ADD_COUNT,
   ADD_TO_CART
-} from './mutation-types'
+} from './mutation-types.js'
 
 export default {
   addCart(context, payload) {
     console.log(payload);
-    //判断新加入的payload的iid是否存在于cartList中
+    //设置一个Promise对象，在点击加入购物车resolve相关信息（actions返回的为Promise对象）
     return new Promise((resolve, reject) => {
+      //判断新加入的payload的iid是否存在于cartList中
       let oldProduct = context.state.cartList.find(item => item.iid === payload.iid)
       if(oldProduct) {
         // oldProduct.count += 1
