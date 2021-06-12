@@ -5,7 +5,7 @@
                   @click.native="checkClick"></check-button>
     <span>全选</span>
     <span class="total-price">合计:￥{{totalPrice}}</span>
-    <span class="buy-product">去计算({{cartCount}})</span>
+    <span class="buy-product" @click="buyClick">去计算({{cartCount}})</span>
   </div>
 </template>
 
@@ -42,6 +42,11 @@
           });
         } else {
           this.cartList.forEach(item => item.check = true)
+        }
+      },
+      buyClick() {
+        if (!this.isSelectAll) {
+          this.$toast.show('请选择商品', 1500)
         }
       }
     }

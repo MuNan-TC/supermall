@@ -20,7 +20,7 @@
     components: {
       NavBar,
       CartList,
-      CartBottomBar
+      CartBottomBar,
     },
     computed: {
       ...mapGetters({

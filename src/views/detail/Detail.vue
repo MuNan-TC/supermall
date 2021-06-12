@@ -67,7 +67,7 @@
       DetailCommentInfo,
       DetailBottomBar,
       GoodsList,
-      Scroll
+      Scroll,
     },
     created() {
       //1.保存传入的商品id
