@@ -2,7 +2,7 @@ import Toast from './Toast'
 
 const obj = {}
 
-//将toast插件放入main中，在程序开始之前就加在插件，执行install函数(传回的是Vue对象)
+//将toast插件放入main中，在程序开始之前就加载插件，执行install函数(传回的是Vue对象)
 obj.install = function(Vue) {
   /**
    * 由于Toast含有template模块，需要加载时间，所以需要先构建好DOM元素
@@ -21,7 +21,7 @@ obj.install = function(Vue) {
   // 4.toast.$el对应的就是上面创建的div
   document.body.appendChild(toast.$el)
 
-  // 5.将挂在的toast放入原型
+  // 5.将toast放入原型
   Vue.prototype.$toast = toast
 }
 
