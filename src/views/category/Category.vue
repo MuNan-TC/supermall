@@ -4,33 +4,52 @@
       <div slot="center">商品分类</div>
     </nav-bar>
     <div class="content">
-      <tab-menu :categories="categories"></tab-menu>
+      <tab-menu :categories="categories" 
+                @selectItem="selectItem"></tab-menu>
+
+      <scroll id="tab-content" :data="[categoryData]">
+        <div>
+          <tab-content-category :subcategories="showSubcategory"></tab-content-category>
+        </div>
+      </scroll>
     </div>
   </div>
 </template>
   
 <script>
   import NavBar from 'components/common/navbar/NavBar'
+  import Scroll from 'components/common/scroll/Scroll'
 
   import TabMenu from './childComp/TabMenu.vue'
+  import TabContentCategory from './childComp/TabContentCategory.vue'
 
   import {getCategory, getSubcategory, getCategoryDetail} from 'network/categroy'
+  import {POP, NEW, SELL} from 'common/const'
 
   export default {
     name: 'Category',
     components: {
       NavBar,
-      TabMenu
+      Scroll,
+      TabMenu,
+      TabContentCategory
     },
     data() {
       return {
         categories: [],
-        categoryData: {}
+        categoryData: {},
+        currentIndex: -1
       }
     },
     created() {
       // 请求分类数据
       this._getCategory()
+    },
+    computed: {
+      showSubcategory() {
+        if (this.currentIndex === -1) return {}
+        return this.categoryData[this.currentIndex].subcategories
+      }
     },
     methods: {
       _getCategory() {
@@ -50,13 +69,13 @@
             }
           }
           // 3.请求第一个数据
-          // this._getSubcategories(0)
+          this._getSubcategories(0)
         })
       },
-      /* _getSubcategories(index) {
+      _getSubcategories(index) {
         this.currentIndex = index;
-        const mailKey = this.categories[index].maitKey
-        getSubcategory(mailKey).then(res => {
+        const maitKey = this.categories[index].maitKey
+        getSubcategory(maitKey).then(res => {
           this.categoryData[index].subcategories = res.data
           this.categoryData = {...this.categoryData}
           this._getCategoryDetail(POP)
@@ -73,15 +92,20 @@
           this.categoryData[this.currentIndex].categoryDetail[type] = res
           this.categoryData = {...this.categoryData}
         })
-      } */
+      },
+      selectItem(index) {
+        this._getSubcategories(index)
+      }
     }
   }
 </script>
 
 <style scoped>
-  /* #categroy {
+  #categroy {
+    height: 100vh;
+    overflow: hidden;
+  }
 
-  } */
   .nav-bar {
     background-color: var(--color-tint);
     color: #fff;
@@ -96,5 +120,10 @@
     bottom: 49px;
 
     display: flex;
+  }
+
+  #tab-content {
+    height: 100%;
+    flex: 1;
   }
 </style>

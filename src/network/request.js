@@ -10,7 +10,7 @@ export function request(config) {
   instance.interceptors.request.use(config => {
     return config
   }, err => {
-
+    return err
   })
 
   instance.interceptors.response.use(res => {

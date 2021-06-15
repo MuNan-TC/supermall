@@ -9,7 +9,7 @@ export function getCategory() {
 export function getSubcategory(maitKey) {
   return request({
     url: '/subcategory',
-    param: {
+    params: {
       maitKey
     }
   })
