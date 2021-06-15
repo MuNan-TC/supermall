@@ -10,6 +10,9 @@
       <scroll id="tab-content" :data="[categoryData]">
         <div>
           <tab-content-category :subcategories="showSubcategory"></tab-content-category>
+          <tab-control :titles="['综合', '新品', '销量']"
+                       @tabClick="tabClick"></tab-control>
+          <tab-content-detail :category-detail="showCategoryDetail"></tab-content-detail>
         </div>
       </scroll>
     </div>
@@ -19,11 +22,14 @@
 <script>
   import NavBar from 'components/common/navbar/NavBar'
   import Scroll from 'components/common/scroll/Scroll'
+  import TabControl from 'components/content/tabControl/TabControl'
 
   import TabMenu from './childComp/TabMenu.vue'
   import TabContentCategory from './childComp/TabContentCategory.vue'
+  import TabContentDetail from './childComp/TabContentDetail.vue'
 
   import {getCategory, getSubcategory, getCategoryDetail} from 'network/categroy'
+  import {tabControlMixin} from 'common/mixin'
   import {POP, NEW, SELL} from 'common/const'
 
   export default {
@@ -31,14 +37,18 @@
     components: {
       NavBar,
       Scroll,
+      TabControl,
       TabMenu,
-      TabContentCategory
+      TabContentCategory,
+      TabContentDetail
     },
+    mixins: [tabControlMixin],
     data() {
       return {
         categories: [],
         categoryData: {},
-        currentIndex: -1
+        currentIndex: -1,
+        currentType: POP
       }
     },
     created() {
@@ -49,6 +59,10 @@
       showSubcategory() {
         if (this.currentIndex === -1) return {}
         return this.categoryData[this.currentIndex].subcategories
+      },
+      showCategoryDetail() {
+        if (this.currentIndex === -1) return []
+        return this.categoryData[this.currentIndex].categoryDetail[this.currentType]
       }
     },
     methods: {
